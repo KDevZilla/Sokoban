@@ -50,12 +50,16 @@ namespace Sokoban
 
 
         }
+        string PreviousElementBeforePlay = "";
         private void MovePlayer(Direction direction)
         {
+        
             Level2d[CurrentPositionPlayer.Y, CurrentPositionPlayer.X] = " ";
             Point pointDelta = dicDirectionPoint[direction];
             CurrentPositionPlayer.X += pointDelta.X;
             CurrentPositionPlayer.Y += pointDelta.Y;
+            PreviousElementBeforePlay = Level2d[CurrentPositionPlayer.Y, CurrentPositionPlayer.X];
+
             Level2d[CurrentPositionPlayer.Y, CurrentPositionPlayer.X] = "@";
             RefreshImage();
         }
