@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.28307.2092
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sokoban", "Sokoban\Sokoban.csproj", "{6B34C55E-D3E3-4EC4-8B54-1BEF7856B76E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SokobanUnitTest", "SokobanUnitTest\SokobanUnitTest.csproj", "{DF27155F-2903-4EEE-B9A0-58BC40533EFE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{6B34C55E-D3E3-4EC4-8B54-1BEF7856B76E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6B34C55E-D3E3-4EC4-8B54-1BEF7856B76E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6B34C55E-D3E3-4EC4-8B54-1BEF7856B76E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DF27155F-2903-4EEE-B9A0-58BC40533EFE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DF27155F-2903-4EEE-B9A0-58BC40533EFE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DF27155F-2903-4EEE-B9A0-58BC40533EFE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DF27155F-2903-4EEE-B9A0-58BC40533EFE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static Sokoban.SokobanMap;
 
 namespace Sokoban
 {
@@ -80,52 +81,43 @@ namespace Sokoban
         {
             
         }
-        public enum ImageType
-        {
-            box,
-            box_docx,
-            dock,
-            floor,
-            wall,
-            worker,
-            worker_doced
-        }
-        private Dictionary<ImageType, Image> _dicImage = null;
-        public Dictionary<ImageType, Image> dicImage
+       
+        private Dictionary<Sokoelement, Image> _dicImage = null;
+        public Dictionary<Sokoelement, Image> dicImage
         {
             get
             {
                 if(_dicImage == null)
                 {
-                    _dicImage = new Dictionary<ImageType, Image>();
+                    _dicImage = new Dictionary<Sokoelement, Image>();
                 }
                 return _dicImage;
             }
         }
-        private Dictionary<ImageType, String> dicImageFileName = new Dictionary<ImageType, string>()
+        private Dictionary<Sokoelement, String> dicImageFileName = new Dictionary<Sokoelement, string>()
         {
-            {ImageType.box,@"yoshi-32-box.png" },
-            {ImageType.box_docx,@"yoshi-32-box-docked.png" },
-            {ImageType.dock,@"yoshi-32-dock.png" },
-            {ImageType.floor,@"yoshi-32-floor.png" },
-            {ImageType.wall,@"yoshi-32-wall.png" },
-            {ImageType.worker,@"yoshi-32-worker.png" },
-            {ImageType.worker_doced,@"yoshi-32-worker-docked.png" },
+            {Sokoelement.box,@"yoshi-32-box.png" },
+            {Sokoelement.box_docx,@"yoshi-32-box-docked.png" },
+            {Sokoelement.dock,@"yoshi-32-dock.png" },
+            {Sokoelement.floor,@"yoshi-32-floor.png" },
+            {Sokoelement.wall,@"yoshi-32-wall.png" },
+            {Sokoelement.worker,@"yoshi-32-worker.png" },
+            {Sokoelement.worker_doced,@"yoshi-32-worker-docked.png" },
 
         };
 
-        private Dictionary<String, ImageType> dicElemntImageType = new Dictionary<String, ImageType>()
+        private Dictionary<String, Sokoelement> dicElemntType = new Dictionary<String, Sokoelement>()
         {
-            {"$", ImageType.box  },
-            {"*",ImageType.box_docx },
-            {".",ImageType.dock },
-            {" ",ImageType.floor },
-            {"#",ImageType.wall },
-            {"@",ImageType.worker },
-            {"+",ImageType.worker_doced },
+            {"$", Sokoelement.box  },
+            {"*",Sokoelement.box_docx },
+            {".",Sokoelement.dock },
+            {" ",Sokoelement.floor },
+            {"#",Sokoelement.wall },
+            {"@",Sokoelement.worker },
+            {"+",Sokoelement.worker_doced },
 
         };
-        private Image GetImage(ImageType imgtype)
+        private Image GetImage(Sokoelement imgtype)
         {
             if (!dicImage.ContainsKey(imgtype))
             {
@@ -175,7 +167,7 @@ namespace Sokoban
                 {
                     //Level2d[i, j] = line.Substring (j,1);
 
-                    Image img = GetImage(dicElemntImageType[Level2d[i,j]]);
+                    Image img = GetImage(dicElemntType[Level2d[i,j]]);
                     Rectangle rec = new Rectangle(j * ElementWidth -1, i * ElementWidth -1, ElementWidth+2, ElementWidth+2);
                     e.Graphics.DrawImage(img, rec);
                 }
