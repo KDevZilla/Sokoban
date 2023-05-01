@@ -50,24 +50,36 @@ namespace SokobanUnitTest
             Map.PlayerWalk(Sokoban.SokobanMap.Direction.Left);
 
             Assert.IsTrue(Map.Level2d[1, 1] ==dicElemntTypeToString[Sokoelement.worker_doced] );
+            Assert.IsTrue(Map.WorkerPosition.Row == 1);
+            Assert.IsTrue(Map.WorkerPosition.Col  == 1);
 
             Map.PlayerWalk(Direction.Left);
             Assert.IsTrue(Map.Level2d[1, 1] == dicElemntTypeToString[Sokoelement.worker_doced]);
+            Assert.IsTrue(Map.WorkerPosition.Row == 1);
+            Assert.IsTrue(Map.WorkerPosition.Col == 1);
 
             Map.PlayerWalk(Direction.Right);
             Assert.IsTrue(Map.Level2d[1, 2] == dicElemntTypeToString[Sokoelement.worker]);
+            Assert.IsTrue(Map.WorkerPosition.Row == 1);
+            Assert.IsTrue(Map.WorkerPosition.Col == 2);
 
             Map.PlayerWalk(Direction.Right);
             Assert.IsTrue(Map.Level2d[1, 3] == dicElemntTypeToString[Sokoelement.worker]);
+            Assert.IsTrue(Map.WorkerPosition.Row == 1);
+            Assert.IsTrue(Map.WorkerPosition.Col == 3);
+
 
             Map.PlayerWalk(Direction.Down);
             Assert.IsTrue(Map.Level2d[2, 3] == dicElemntTypeToString[Sokoelement.worker]);
 
             Map.PlayerWalk(Direction.Down);
-            Map.PlayerWalk(Direction.Right);
-            Assert.IsTrue(Map.Level2d[2, 4] == dicElemntTypeToString[Sokoelement.worker]);
+            Assert.IsTrue(Map.Level2d[3, 3] == dicElemntTypeToString[Sokoelement.worker]);
+             
 
-            Assert.IsTrue(Map.Level2d[2, 5] == dicElemntTypeToString[Sokoelement.box]);
+            Map.PlayerWalk(Direction.Right);
+            Assert.IsTrue(Map.Level2d[3, 3] == dicElemntTypeToString[Sokoelement.worker]);
+            Map.PlayerWalk(Direction.Left );
+            Assert.IsTrue(Map.Level2d[3, 2] == dicElemntTypeToString[Sokoelement.worker]);
 
         }
 

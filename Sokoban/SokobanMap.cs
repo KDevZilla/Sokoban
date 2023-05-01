@@ -120,16 +120,16 @@ namespace Sokoban
         {
             int i;
             int j;
-            /*
+            
             for (i = 0; i < Row; i++)
             {
                 for (j = 0; j < Row; j++)
                 {
-
+                    Level2d[i, j] = dicElemntTypeToString[Sokoelement.floor];
                 }
             }
-            */
-
+            
+            
             Level2d[WorkerPosition.Row, WorkerPosition.Col] = dicElemntTypeToString[Sokoelement.worker];
             foreach (Position pos in dicBoxPosition.Values)
             {
@@ -200,16 +200,21 @@ namespace Sokoban
 
                 }
                 return;
+            } else if ( element == Sokoelement.floor ||
+                element == Sokoelement.dock)
+            {
+                CanMove = true;
             }
             if (CanMove)
             {
-                for(int i = listPositionBoxMove.Count; i >= 0; i--)
+                for(int i = listPositionBoxMove.Count-1; i >= 0; i--)
                 {
                     NextToPosition = listPositionBoxMove[i].Add(deltaPosition);
                     dicBoxPosition[listPositionBoxMove[i].PositionString()] = NextToPosition.Clone();
                 }
+                WorkerPosition = NextToPlayerPosition.Clone();
             }
-            WorkerPosition = NextToPlayerPosition.Clone();
+
 
             UpdateMap();
 
