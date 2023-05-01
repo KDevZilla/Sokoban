@@ -23,6 +23,16 @@ namespace Sokoban
         {
             return (Row.ToString() + "_" + Col.ToString()).GetHashCode();
         }
+        public Position Add(int Row, int Col)
+        {
+            return new Position(this.Row + Row, this.Col + Col);
+
+        }
+        public Position Add(Position position)
+        {
+            return Add(position.Row, position.Col);
+        }
+
         public Position Clone()
         {
             Position NewPostion = new Position(this.Row, this.Col);
