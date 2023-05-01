@@ -22,8 +22,8 @@ namespace Sokoban
         public String[,] Level2d = null;
         Stack<String[,]> stackState { get; set; } = new Stack<String[,]>();
         Sokoelement[,] LevelElement = null;
-        int Row { get; set; } = 0;
-        int Col { get; set; } = 0;
+        public int Row { get; private set; } = 0;
+        public int Col { get; private set; } = 0;
         public enum Sokoelement
         {
             box,
@@ -128,9 +128,9 @@ namespace Sokoban
             dicBoxPosition.Add(pos.PositionString(), pos);
         }
 
-        public bool IsInRange(int Row, int Col)
+        public bool IsIndexInRange(int rowIndex, int colIndex)
         {
-            if(Row < 0 || Row > this.Row || Col < 0 || Col > this.Col)
+            if(rowIndex < 0 || rowIndex >= this.Row || colIndex < 0 || colIndex >= this.Col)
             {
                 return false;
             }
@@ -144,7 +144,7 @@ namespace Sokoban
             
             for (i = 0; i < Row; i++)
             {
-                for (j = 0; j < Row; j++)
+                for (j = 0; j < Col; j++)
                 {
                     Level2d[i, j] = dicElemntTypeToString[Sokoelement.floor];
                 }
@@ -197,64 +197,59 @@ namespace Sokoban
         {
             Position deltaPosition = dicDirectionPoint[direction];
             Position NextToPlayerPosition = this.WorkerPosition.Add(deltaPosition);
-            //Position NextToPosition = this.WorkerPosition.Add(deltaPosition);
 
-            //this.WorkerPosition
-          //  String elementString = Level2d[NextToPosition.Row, NextToPosition.Col];
-           // bool IsItHitthewall = false;
+            if (!IsIndexInRange(NextToPlayerPosition.Row, NextToPlayerPosition.Col))
+            {
+                return;
+            }
+
             Sokoelement element = GetElement(NextToPlayerPosition.Row, NextToPlayerPosition.Col);
             bool CanMove = false;
-            List<Position> listPositionBoxMove = new List<Position>();
+
+            Position BoxPositionToMove = null;
             Position NextToPosition = null;
-            if (element== Sokoelement.box ||
-                element== Sokoelement.box_docx)
-            {
-                int i;
-                 NextToPosition = NextToPlayerPosition.Clone();
-                while (true)
-                {
-
-                    if(!IsInRange (NextToPosition.Row ,NextToPosition.Col))
-                    {
-                        break;
-                    }
-
-                    Sokoelement NextElement = GetElement(NextToPosition.Row, NextToPosition.Col);
-                    if(NextElement == Sokoelement.wall)
-                    {
-                        CanMove = false;
-                       // IsItHitthewall = true;
-                        break;
-                    } else if(NextElement == Sokoelement.box ||
-                        NextElement == Sokoelement.box_docx)
-                    {
-                        listPositionBoxMove.Add(NextToPosition);
-                      //  CanMove = true;
-                    } else if(NextElement == Sokoelement.floor ||
-                        NextElement== Sokoelement.dock)
-                    {
-                       // listPositionBoxMove.Add(NextToPosition);
-                        CanMove = true;
-                        break;
-                    }
-                    NextToPosition = NextToPosition.Add(deltaPosition);
-
-                }
-               // return;
-            } else if ( element == Sokoelement.floor ||
-                element == Sokoelement.dock)
+            if (element == Sokoelement.floor ||
+               element == Sokoelement.dock)
             {
                 CanMove = true;
             }
+            else if (element== Sokoelement.box ||
+                element== Sokoelement.box_docx)
+            {
+                
+                int i;
+                 BoxPositionToMove = NextToPlayerPosition.Clone();
+                Position NextToBoxPostion = BoxPositionToMove.Add(deltaPosition);
+                 //NextToPosition = NextToPlayerPosition.Clone();
+                if (!IsIndexInRange(NextToBoxPostion.Row, NextToBoxPostion.Col))
+                {
+                    CanMove = false;
+                }
+                else
+                {
+                    Sokoelement NextToBoxElement = GetElement(NextToBoxPostion.Row, NextToBoxPostion.Col);
+
+                    if (NextToBoxElement == Sokoelement.wall ||
+                        NextToBoxElement == Sokoelement.box ||
+                        NextToBoxElement == Sokoelement.box_docx)
+                    {
+                        CanMove = false;
+
+                    } else
+                    {
+                        CanMove = true;
+                    }
+                } 
+
+               // return;
+            } 
             if (CanMove)
             {
-
-                for(int i = listPositionBoxMove.Count-1; i >= 0; i--)
+                if (BoxPositionToMove != null)
                 {
-                    NextToPosition = listPositionBoxMove[i].Add(deltaPosition);
-                    MoveBox(listPositionBoxMove[i], NextToPosition);
-                    //dicBoxPosition[listPositionBoxMove[i].PositionString()] = NextToPosition.Clone();
+                    MoveBox(BoxPositionToMove, BoxPositionToMove.Add(deltaPosition));
                 }
+
                 WorkerPosition = NextToPlayerPosition.Clone();
             }
 
@@ -378,14 +373,32 @@ namespace Sokoban
         public void ParseLevel(String level)
         {
             String[] LevelLines = Level.Split(Environment.NewLine.ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
-            Level2d = new string[LevelLines.Length, LevelLines[0].Length];
+            int MaxColumn = LevelLines[0].Length;
             int i, j = 0;
             for (i = 0; i < LevelLines.Length; i++)
             {
-                string line = LevelLines[i].Trim();
-                for (j = 0; j < line.Length; j++)
+                if(MaxColumn< LevelLines[i].Length )
                 {
-                    Level2d[i, j] = line.Substring(j, 1);
+                    MaxColumn = LevelLines[i].Length;
+                }
+     
+            }
+            Level2d = new string[LevelLines.Length, MaxColumn];
+
+            for (i = 0; i < LevelLines.Length; i++)
+            {
+                string line = LevelLines[i];
+                //for (j = 0; j < line.Length; j++)
+                for(j=0;j<MaxColumn;j++)
+                {
+                    if (j > line.Length - 1)
+                    {
+                        Level2d[i, j] = " ";
+                    }
+                    else
+                    {
+                        Level2d[i, j] = line.Substring(j, 1);
+                    }
                 }
             }
             ParseLevelFromLevel2d();

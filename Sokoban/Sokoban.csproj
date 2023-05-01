@@ -52,6 +52,12 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormChooseMap.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormChooseMap.Designer.cs">
+      <DependentUpon>FormChooseMap.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormSokoban.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -65,6 +71,9 @@
     <Compile Include="Util\FileUtil.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormChooseMap.resx">
+      <DependentUpon>FormChooseMap.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormSokoban.resx">
       <DependentUpon>FormSokoban.cs</DependentUpon>

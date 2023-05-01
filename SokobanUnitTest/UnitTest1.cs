@@ -108,6 +108,26 @@ namespace SokobanUnitTest
           
             Assert.IsTrue(!Map.IsSolve);
 
+            String nonSquareLevel =
+@"#######
+#.@ # #
+#$* $       #
+#   $ #
+# ..  #
+#  *  #
+#######";
+
+            Map = new Sokoban.SokobanMap(nonSquareLevel);
+            Assert.IsTrue(Map.Col == "#$* $       #".Length);
+            Assert.IsTrue(Map.Row == 7);
+
+            Assert.IsTrue(Map.dicBoxPosition.Count == 5);
+            Assert.IsTrue(Map.dicBoxPosition.ContainsKey(new Position(2, 1).PositionString()));
+            Assert.IsTrue(Map.dicBoxPosition.ContainsKey(new Position(2, 2).PositionString()));
+            Assert.IsTrue(Map.dicBoxPosition.ContainsKey(new Position(2, 4).PositionString()));
+            Assert.IsTrue(Map.dicBoxPosition.ContainsKey(new Position(3, 4).PositionString()));
+            Assert.IsTrue(Map.dicBoxPosition.ContainsKey(new Position(5, 3).PositionString()));
+
         }
         [TestMethod]
         public void Push()
@@ -140,7 +160,7 @@ namespace SokobanUnitTest
         }
 
         [TestMethod]
-        public void PushMultipleBox()
+        public void PushBoxNextToBox()
         {
             String pLevel =
 @"#######
@@ -155,15 +175,15 @@ namespace SokobanUnitTest
             Assert.IsTrue(Map.dicBoxPosition.Count == 7);
             Map.PlayerWalk(Sokoban.SokobanMap.Direction.Down);
 
-            Assert.IsTrue(Map.Level2d[2, 1] == dicElemntTypeToString[Sokoelement.worker]);
+            Assert.IsTrue(Map.Level2d[1, 1] == dicElemntTypeToString[Sokoelement.worker]);
             Assert.IsTrue(Map.dicBoxPosition.Count == 7);
-            Assert.IsTrue(Map.WorkerPosition.Row == 2);
+            Assert.IsTrue(Map.WorkerPosition.Row == 1);
             Assert.IsTrue(Map.WorkerPosition.Col == 1);
 
             Assert.IsTrue(Map.dicBoxPosition.Count == 7);
-            Assert.IsTrue(Map.IsContatinBoxAtPosition(3, 1));
-            Assert.IsTrue(Map.IsContatinBoxAtPosition(4, 1));
-            Assert.IsTrue(Map.IsContatinBoxAtPosition(5, 1));
+            Assert.IsTrue(Map.IsContatinBoxAtPosition(2, 1));
+            Assert.IsTrue(Map.IsContatinBoxAtPosition(2, 1));
+            Assert.IsTrue(Map.IsContatinBoxAtPosition(2, 1));
 
 
 
