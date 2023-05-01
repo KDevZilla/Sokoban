@@ -102,7 +102,7 @@ namespace Sokoban
             {Sokoelement.floor,@"yoshi-32-floor.png" },
             {Sokoelement.wall,@"yoshi-32-wall.png" },
             {Sokoelement.worker,@"yoshi-32-worker.png" },
-            {Sokoelement.worker_doced,@"yoshi-32-worker-docked.png" },
+            {Sokoelement.worker_dock,@"yoshi-32-worker-docked.png" },
 
         };
 
@@ -114,7 +114,7 @@ namespace Sokoban
             {" ",Sokoelement.floor },
             {"#",Sokoelement.wall },
             {"@",Sokoelement.worker },
-            {"+",Sokoelement.worker_doced },
+            {"+",Sokoelement.worker_dock },
 
         };
         private Image GetImage(Sokoelement imgtype)

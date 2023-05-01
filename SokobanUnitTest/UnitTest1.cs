@@ -18,7 +18,7 @@ namespace SokobanUnitTest
             {" ",Sokoelement.floor },
             {"#",Sokoelement.wall },
             {"@",Sokoelement.worker },
-            {"+",Sokoelement.worker_doced },
+            {"+",Sokoelement.worker_dock },
 
         };
         private Dictionary<Sokoelement, String> dicElemntTypeToString = new Dictionary<Sokoelement, String>()
@@ -29,7 +29,7 @@ namespace SokobanUnitTest
             {Sokoelement.floor," " },
             {Sokoelement.wall,"#" },
             {Sokoelement.worker,"@" },
-            {Sokoelement.worker_doced,"+" },
+            {Sokoelement.worker_dock,"+" },
 
         };
 
@@ -49,12 +49,12 @@ namespace SokobanUnitTest
             Sokoban.SokobanMap Map = new Sokoban.SokobanMap(Level);
             Map.PlayerWalk(Sokoban.SokobanMap.Direction.Left);
 
-            Assert.IsTrue(Map.Level2d[1, 1] ==dicElemntTypeToString[Sokoelement.worker_doced] );
+            Assert.IsTrue(Map.Level2d[1, 1] ==dicElemntTypeToString[Sokoelement.worker_dock] );
             Assert.IsTrue(Map.WorkerPosition.Row == 1);
             Assert.IsTrue(Map.WorkerPosition.Col  == 1);
 
             Map.PlayerWalk(Direction.Left);
-            Assert.IsTrue(Map.Level2d[1, 1] == dicElemntTypeToString[Sokoelement.worker_doced]);
+            Assert.IsTrue(Map.Level2d[1, 1] == dicElemntTypeToString[Sokoelement.worker_dock]);
             Assert.IsTrue(Map.WorkerPosition.Row == 1);
             Assert.IsTrue(Map.WorkerPosition.Col == 1);
 
@@ -125,7 +125,7 @@ namespace SokobanUnitTest
             Assert.IsTrue(Map.dicBoxPosition.Count == 5);
             Map.PlayerWalk(Sokoban.SokobanMap.Direction.Left);
 
-            Assert.IsTrue(Map.Level2d[1, 1] == dicElemntTypeToString[Sokoelement.worker_doced]);
+            Assert.IsTrue(Map.Level2d[1, 1] == dicElemntTypeToString[Sokoelement.worker_dock]);
 
             Map.PlayerWalk(Direction.Down);
             Assert.IsTrue(Map.Level2d[2, 1] == dicElemntTypeToString[Sokoelement.worker]);
@@ -195,6 +195,71 @@ namespace SokobanUnitTest
             Assert.IsTrue(Map.dicBoxPosition.Count == 6);
             Assert.IsTrue(Map.IsContatinBoxAtPosition(2, 1));
             Assert.IsTrue(Map.IsContatinBoxAtPosition(3, 1));
+
+
+
+
+
+
+        }
+
+        [TestMethod]
+        public void SolveStatus()
+        {
+            String pLevel =
+@"#######
+#@  # #
+#$*   #
+#.    #
+##    #
+#  *  #
+#######";
+            Sokoban.SokobanMap Map = new Sokoban.SokobanMap(pLevel);
+            Assert.IsTrue(!Map.IsSolve);
+
+           // Assert.IsTrue(Map.dicBoxPosition.Count == 6);
+            Map.PlayerWalk(Sokoban.SokobanMap.Direction.Down);
+
+            Assert.IsTrue(Map.Level2d[2, 1] == dicElemntTypeToString[Sokoelement.worker]);
+            Assert.IsTrue(Map.Level2d[3, 1] == dicElemntTypeToString[Sokoelement.box_docx]);
+            Assert.IsTrue(Map.IsSolve);
+
+           // Assert.IsTrue(Map.dicBoxPosition.Count == 6);
+          
+
+
+
+
+
+        }
+
+        [TestMethod]
+        public void Undo()
+        {
+            String pLevel =
+@"####
+#.@#
+#$ #
+####";
+            Sokoban.SokobanMap Map = new Sokoban.SokobanMap(pLevel);
+
+            String[,] level2dOriginal =(String[,])Map.Level2d.Clone();
+
+            Map.PlayerWalk(Sokoban.SokobanMap.Direction.Down);
+            Map.Undo();
+            int i;
+            int j;
+            for(i=0;i<level2dOriginal.GetUpperBound(0); i++)
+            {
+                for(j=0;j<level2dOriginal.GetUpperBound(1); j++)
+                {
+                    if(level2dOriginal[i,j] != Map.Level2d[i, j])
+                    {
+                        Assert.Fail($"{i} , {j} has problem");
+                    }
+                }
+            }
+           
 
 
 

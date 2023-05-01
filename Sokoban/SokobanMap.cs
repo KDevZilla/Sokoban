@@ -20,6 +20,7 @@ namespace Sokoban
         public bool IsSolve { get; private set; } = false;
         
         public String[,] Level2d = null;
+        Stack<String[,]> stackState { get; set; } = new Stack<String[,]>();
         Sokoelement[,] LevelElement = null;
         int Row { get; set; } = 0;
         int Col { get; set; } = 0;
@@ -31,7 +32,7 @@ namespace Sokoban
             floor,
             wall,
             worker,
-            worker_doced
+            worker_dock
         }
 
         private Dictionary<String, Sokoelement> dicStringToElemntType = new Dictionary<String, Sokoelement>()
@@ -42,7 +43,7 @@ namespace Sokoban
             {" ",Sokoelement.floor },
             {"#",Sokoelement.wall },
             {"@",Sokoelement.worker },
-            {"+",Sokoelement.worker_doced },
+            {"+",Sokoelement.worker_dock },
 
         };
         private Dictionary< Sokoelement, String> dicElemntTypeToString = new Dictionary<Sokoelement, String >()
@@ -53,7 +54,7 @@ namespace Sokoban
             {Sokoelement.floor," " },
             {Sokoelement.wall,"#" },
             {Sokoelement.worker,"@" },
-            {Sokoelement.worker_doced,"+" },
+            {Sokoelement.worker_dock,"+" },
 
         };
         public Position WorkerPosition = null;
@@ -166,7 +167,7 @@ namespace Sokoban
                     Level2d[pos.Row, pos.Col] = dicElemntTypeToString[Sokoelement.box_docx];
                 } else if(Level2d [pos.Row ,pos.Col]== dicElemntTypeToString[Sokoelement.worker]){
 
-                    Level2d[pos.Row, pos.Col] = dicElemntTypeToString[Sokoelement.worker_doced];
+                    Level2d[pos.Row, pos.Col] = dicElemntTypeToString[Sokoelement.worker_dock];
                 }
                 else
                 {
@@ -190,6 +191,8 @@ namespace Sokoban
            
             
         }
+        //Stack<Direction> stackDirection { get; set; } = new Stack<Direction>();
+        
         public void PlayerWalk(Direction direction)
         {
             Position deltaPosition = dicDirectionPoint[direction];
@@ -245,6 +248,7 @@ namespace Sokoban
             }
             if (CanMove)
             {
+
                 for(int i = listPositionBoxMove.Count-1; i >= 0; i--)
                 {
                     NextToPosition = listPositionBoxMove[i].Add(deltaPosition);
@@ -254,10 +258,47 @@ namespace Sokoban
                 WorkerPosition = NextToPlayerPosition.Clone();
             }
 
-
+            //stackDirection.Push(direction);
+            stackState.Push((String[,])Level2d.Clone());
             UpdateMap();
-
+            CheckIfIsSolve();
             
+        }
+        private Direction GetOppositeDirection(Direction direction)
+        {
+            switch (direction)
+            {
+                case Direction.Down:
+                    return Direction.Up;
+                    break;
+                case Direction.Up:
+                    return Direction.Down;
+                    break;
+                case Direction.Left:
+                    return Direction.Right;
+                    break;
+                case Direction.Right:
+                    return Direction.Left;
+                    break;
+                default:
+                    throw new Exception($"{direction} is not valid");
+            }
+
+        }
+        public void Undo()
+        {
+            // Direction directionFromStack = stackDirection.Pop();
+            if(stackState.Count <= 0)
+            {
+                return;
+            }
+          //  stackState.Pop();
+            Level2d = stackState.Pop();
+
+            ParseLevelFromLevel2d();
+            UpdateMap();
+            CheckIfIsSolve();
+
         }
         private void MoveBox(Position from, Position to)
         {
@@ -265,27 +306,25 @@ namespace Sokoban
             dicBoxPosition.Add(to.PositionString(), to.Clone());
 
         }
-        public void ParseLevel(String level)
+        private void ParseLevelFromLevel2d()
         {
-            String[] LevelLines = Level.Split(Environment.NewLine.ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
-            Level2d = new string[LevelLines.Length, LevelLines[0].Length];
-            int i, j = 0;
-            for (i = 0; i < LevelLines.Length; i++)
-            {
-                string line = LevelLines[i].Trim();
-                for (j = 0; j < line.Length; j++)
-                {
-                    Level2d[i, j] = line.Substring(j, 1);
-                }
-            }
             Row = Level2d.GetLength(0);
             Col = Level2d.GetLength(1);
-           // LevelElement = new Sokoelement[Row, Col];
-            for (i=0;i<Row; i++)
+
+            dicBoxPosition = new Dictionary<string, Position>();
+            dicDockPosition = new Dictionary<string, Position>();
+            dicWallPosition = new Dictionary<string, Position>();
+            WorkerPosition = null;
+
+            int i;
+            int j;
+
+            // LevelElement = new Sokoelement[Row, Col];
+            for (i = 0; i < Row; i++)
             {
-                for(j=0;j<Col; j++)
+                for (j = 0; j < Col; j++)
                 {
-                    switch (dicStringToElemntType[ Level2d[i, j]])
+                    switch (dicStringToElemntType[Level2d[i, j]])
                     {
                         case Sokoelement.box:
                             AddBoxPosition(i, j);
@@ -314,27 +353,42 @@ namespace Sokoban
                             }
                             WorkerPosition = new Position(i, j);
                             break;
-                        case Sokoelement.worker_doced:
+                        case Sokoelement.worker_dock:
                             if (WorkerPosition != null)
                             {
                                 throw new Exception("The level contain more than one worker. It is invalid");
                             }
                             WorkerPosition = new Position(i, j);
-                            AddBoxPosition(i, j);
+                            AddDockPosition(i, j);
                             //listBoxPosition.Add(new Position(i, j));
                             break;
                     }
                 }
             }
-            if(dicBoxPosition.Count != dicDockPosition.Count )            
+            if (dicBoxPosition.Count != dicDockPosition.Count)
             {
                 throw new Exception("No of list DockPostion does not match with list BoxPosition");
             }
 
-            if(dicBoxPosition.Count == 0)
+            if (dicBoxPosition.Count == 0)
             {
                 throw new Exception("No of list of DockPosition is 0 which is not correct. It must be more than 0");
             }
+        }
+        public void ParseLevel(String level)
+        {
+            String[] LevelLines = Level.Split(Environment.NewLine.ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+            Level2d = new string[LevelLines.Length, LevelLines[0].Length];
+            int i, j = 0;
+            for (i = 0; i < LevelLines.Length; i++)
+            {
+                string line = LevelLines[i].Trim();
+                for (j = 0; j < line.Length; j++)
+                {
+                    Level2d[i, j] = line.Substring(j, 1);
+                }
+            }
+            ParseLevelFromLevel2d();
 
         }
         public  SokobanMap(String level)
