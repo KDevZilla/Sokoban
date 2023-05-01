@@ -77,19 +77,129 @@ namespace SokobanUnitTest
              
 
             Map.PlayerWalk(Direction.Right);
-            Assert.IsTrue(Map.Level2d[3, 3] == dicElemntTypeToString[Sokoelement.worker]);
+            Assert.IsTrue(Map.Level2d[3, 4] == dicElemntTypeToString[Sokoelement.worker]);
+            //Assert.IsTrue (Map.dicBoxPosition.ContainsKey (new ))
+            Assert.IsTrue(Map.IsContatinBoxAtPosition(3, 5));
+            Assert.IsTrue(Map.dicBoxPosition.Count == 5);
             Map.PlayerWalk(Direction.Left );
-            Assert.IsTrue(Map.Level2d[3, 2] == dicElemntTypeToString[Sokoelement.worker]);
+            Assert.IsTrue(Map.Level2d[3, 3] == dicElemntTypeToString[Sokoelement.worker]);
+
+        }
+        [TestMethod]
+        public void InitialMap()
+        {
+            String ILevel =
+@"#######
+#.@ # #
+#$* $ #
+#   $ #
+# ..  #
+#  *  #
+#######";
+            Sokoban.SokobanMap Map = new Sokoban.SokobanMap(ILevel);
+
+            Assert.IsTrue(Map.dicBoxPosition.Count == 5);
+            Assert.IsTrue(Map.dicBoxPosition.ContainsKey(new Position(2, 1).PositionString()));
+            Assert.IsTrue(Map.dicBoxPosition.ContainsKey(new Position(2, 2).PositionString()));
+            Assert.IsTrue(Map.dicBoxPosition.ContainsKey(new Position(2, 4).PositionString()));
+            Assert.IsTrue(Map.dicBoxPosition.ContainsKey(new Position(3, 4).PositionString()));
+            Assert.IsTrue(Map.dicBoxPosition.ContainsKey(new Position(5, 3).PositionString()));
+
+          
+            Assert.IsTrue(!Map.IsSolve);
+
+        }
+        [TestMethod]
+        public void Push()
+        {
+            String pLevel =
+@"#######
+#.@ # #
+#$* $ #
+#   $ #
+# ..  #
+#  *  #
+#######";
+            Sokoban.SokobanMap Map = new Sokoban.SokobanMap(Level);
+
+            Assert.IsTrue(Map.dicBoxPosition.Count == 5);
+            Map.PlayerWalk(Sokoban.SokobanMap.Direction.Left);
+
+            Assert.IsTrue(Map.Level2d[1, 1] == dicElemntTypeToString[Sokoelement.worker_doced]);
+
+            Map.PlayerWalk(Direction.Down);
+            Assert.IsTrue(Map.Level2d[2, 1] == dicElemntTypeToString[Sokoelement.worker]);
+            Assert.IsTrue(Map.Level2d[3, 1] == dicElemntTypeToString[Sokoelement.box]);
+
+            Assert.IsTrue(Map.dicBoxPosition.Count == 5);
+            Assert.IsTrue(Map.WorkerPosition.Row == 2);
+            Assert.IsTrue(Map.WorkerPosition.Col == 1);
+
+
 
         }
 
         [TestMethod]
-        public void Push()
+        public void PushMultipleBox()
         {
-            Sokoban.SokobanMap Map = new Sokoban.SokobanMap(Level);
-            Map.PlayerWalk(Sokoban.SokobanMap.Direction.Left);
+            String pLevel =
+@"#######
+#@. # #
+#$* $ #
+#$  $ #
+#$....#
+#  *  #
+#######";
+            Sokoban.SokobanMap Map = new Sokoban.SokobanMap(pLevel);
 
-            Assert.IsTrue(Map.Level2d[1, 1] == dicElemntTypeToString[Sokoelement.worker_doced]);
+            Assert.IsTrue(Map.dicBoxPosition.Count == 7);
+            Map.PlayerWalk(Sokoban.SokobanMap.Direction.Down);
+
+            Assert.IsTrue(Map.Level2d[2, 1] == dicElemntTypeToString[Sokoelement.worker]);
+            Assert.IsTrue(Map.dicBoxPosition.Count == 7);
+            Assert.IsTrue(Map.WorkerPosition.Row == 2);
+            Assert.IsTrue(Map.WorkerPosition.Col == 1);
+
+            Assert.IsTrue(Map.dicBoxPosition.Count == 7);
+            Assert.IsTrue(Map.IsContatinBoxAtPosition(3, 1));
+            Assert.IsTrue(Map.IsContatinBoxAtPosition(4, 1));
+            Assert.IsTrue(Map.IsContatinBoxAtPosition(5, 1));
+
+
+
+
+
+        }
+
+        [TestMethod]
+        public void PushBoxNextToWall()
+        {
+            String pLevel =
+@"#######
+#@. # #
+#$* $ #
+#$  $ #
+##.. .#
+#  *  #
+#######";
+            Sokoban.SokobanMap Map = new Sokoban.SokobanMap(pLevel);
+
+            Assert.IsTrue(Map.dicBoxPosition.Count == 6);
+            Map.PlayerWalk(Sokoban.SokobanMap.Direction.Down);
+
+            Assert.IsTrue(Map.Level2d[1, 1] == dicElemntTypeToString[Sokoelement.worker]);
+            Assert.IsTrue(Map.dicBoxPosition.Count == 6);
+            Assert.IsTrue(Map.WorkerPosition.Row == 1);
+            Assert.IsTrue(Map.WorkerPosition.Col == 1);
+
+            Assert.IsTrue(Map.dicBoxPosition.Count == 6);
+            Assert.IsTrue(Map.IsContatinBoxAtPosition(2, 1));
+            Assert.IsTrue(Map.IsContatinBoxAtPosition(3, 1));
+
+
+
+
+
 
         }
     }

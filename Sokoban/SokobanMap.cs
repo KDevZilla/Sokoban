@@ -16,6 +16,9 @@ namespace Sokoban
 # ..  #
 #  *  #
 #######";
+
+        public bool IsSolve { get; private set; } = false;
+        
         public String[,] Level2d = null;
         Sokoelement[,] LevelElement = null;
         int Row { get; set; } = 0;
@@ -58,6 +61,23 @@ namespace Sokoban
         //public List<Position> listDockPosition = new List<Position>();
         //public List<Position> listBoxPosition = new List<Position>();
 
+        public bool IsContainBoxAtPosition(Position position)
+        {
+            return dicBoxPosition.ContainsKey(position.PositionString());
+        }
+        public bool IsContatinBoxAtPosition(int row, int col)
+        {
+            return IsContainBoxAtPosition(new Position(row, col));
+        }
+        public bool IsWorkerAtPosition(Position position)
+        {
+            return WorkerPosition.Row == position.Row &&
+                WorkerPosition.Col == position.Col;
+        }
+        public bool IsWorkerAtPosition(int row, int col)
+        {
+            return IsWorkerAtPosition(new Position(row, col));
+        }
         public Dictionary<String, Position> dicWallPosition = new Dictionary<string, Position>();
         public Dictionary<String, Position> dicDockPosition = new Dictionary<string, Position>();
         public Dictionary<String, Position> dicBoxPosition = new Dictionary<string, Position>();
@@ -155,6 +175,21 @@ namespace Sokoban
             }
 
         }
+        private void CheckIfIsSolve()
+        {
+            foreach (Position pos in dicBoxPosition.Values)
+            {
+                if(!dicDockPosition.ContainsKey(pos.PositionString()))
+                {
+                    this.IsSolve = false;
+                    return;
+                }
+                //Level2d[pos.Row, pos.Col] = dicElemntTypeToString[Sokoelement.box];
+            }
+            this.IsSolve = true;
+           
+            
+        }
         public void PlayerWalk(Direction direction)
         {
             Position deltaPosition = dicDirectionPoint[direction];
@@ -175,7 +210,7 @@ namespace Sokoban
                  NextToPosition = NextToPlayerPosition.Clone();
                 while (true)
                 {
-                    NextToPosition  = NextToPosition.Add(deltaPosition);
+
                     if(!IsInRange (NextToPosition.Row ,NextToPosition.Col))
                     {
                         break;
@@ -191,15 +226,18 @@ namespace Sokoban
                         NextElement == Sokoelement.box_docx)
                     {
                         listPositionBoxMove.Add(NextToPosition);
+                      //  CanMove = true;
                     } else if(NextElement == Sokoelement.floor ||
                         NextElement== Sokoelement.dock)
                     {
+                       // listPositionBoxMove.Add(NextToPosition);
                         CanMove = true;
                         break;
                     }
+                    NextToPosition = NextToPosition.Add(deltaPosition);
 
                 }
-                return;
+               // return;
             } else if ( element == Sokoelement.floor ||
                 element == Sokoelement.dock)
             {
@@ -210,7 +248,8 @@ namespace Sokoban
                 for(int i = listPositionBoxMove.Count-1; i >= 0; i--)
                 {
                     NextToPosition = listPositionBoxMove[i].Add(deltaPosition);
-                    dicBoxPosition[listPositionBoxMove[i].PositionString()] = NextToPosition.Clone();
+                    MoveBox(listPositionBoxMove[i], NextToPosition);
+                    //dicBoxPosition[listPositionBoxMove[i].PositionString()] = NextToPosition.Clone();
                 }
                 WorkerPosition = NextToPlayerPosition.Clone();
             }
@@ -219,6 +258,12 @@ namespace Sokoban
             UpdateMap();
 
             
+        }
+        private void MoveBox(Position from, Position to)
+        {
+            dicBoxPosition.Remove(from.PositionString());
+            dicBoxPosition.Add(to.PositionString(), to.Clone());
+
         }
         public void ParseLevel(String level)
         {
