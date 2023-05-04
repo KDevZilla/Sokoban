@@ -93,7 +93,7 @@ namespace Sokoban
 ########
 #  *   #
 #  $.  #
-###  ###
+### @###
   #  #
   ####");
             dicStage.Add(7,
