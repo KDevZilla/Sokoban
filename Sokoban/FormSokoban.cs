@@ -13,6 +13,11 @@ namespace Sokoban
 {
     public partial class FormSokoban : Form
     {
+        /*
+         * Credit 
+         * Images::https://github.com/borgar/sokoban-skins
+         * 
+         */
         public FormSokoban()
         {
             InitializeComponent();
@@ -51,7 +56,7 @@ namespace Sokoban
 
 
         }
-        int ElementWidth = 40;
+        int ElementWidth = 60;
         private void PictureBox1_Paint(object sender, PaintEventArgs e)
         {
             // throw new NotImplementedException();
