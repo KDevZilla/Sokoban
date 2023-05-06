@@ -23,15 +23,14 @@ namespace Sokoban
          * https://www.sokobanonline.com/play/web-archive/marti-homs-caussa/
          * http://www.sourcecode.se/sokoban/levels
          */
-        private void FormChooseMap_Load(object sender, EventArgs e)
+         private void LoadDicStage()
         {
-
             dicStage = new Dictionary<int, string>();
             dicStage.Add(0,
 @"
 #######
 #.@ # #
-#$* $       #
+#$* $ #
 #   $ #
 # ..  #
 #  *  #
@@ -106,19 +105,93 @@ namespace Sokoban
 ##  ##
  #  #
  ####");
+            dicStage.Add(8,
+@"
+  ####  
+  #  #  
+###  ###
+# $$ @ #
+#    ..#
+########");
 
+            dicStage.Add(9,
+@"
+####    
+#  #### 
+#  #  # 
+#  . $##
+## $ .@#
+ ### # #
+  #    #
+  #   ##
+  #####");
+
+            dicStage.Add(10,
+@"
+####    
+#  #####
+# .  $ #
+# $  .@#
+###  ###
+  ####");
+
+
+            dicStage.Add(11,
+@"
+#####    
+#   #####
+# .  $  #
+##$##.@ #
+#     ###
+#     #  
+#######  
+");
+
+            dicStage.Add(12,
+@"
+####    
+#  #####
+# .  $ #
+# $  .@#
+###  ###
+  ####  
+");
+            dicStage.Add(13,
+@"
+#####  
+#   #  
+# # ###
+#  $$ #
+###+# #
+#   . #
+# # ###
+#   #
+#####
+");
+        }
+        public string GetMapByIndex(int index)
+        {
+            LoadDicStage();
+            return dicStage[index];
+        }
+        private void FormChooseMap_Load(object sender, EventArgs e)
+        {
+
+            LoadDicStage();
             int i;
             for (i = 0; i < dicStage.Count; i++)
             {
                 this.comboBox1.Items.Add((i + 1));
             }
-            this.comboBox1.SelectedIndex = 0;
+            this.comboBox1.SelectedIndex =Global.CurrentSettings.CurrentMap ;
         }
         public string SelectedMap { get; private set; } = "";
+        public int MapIndexSelected { get; private set; } = 0;
         private void btnChoose_Click(object sender, EventArgs e)
         {
             int index = this.comboBox1.SelectedIndex;
             SelectedMap = dicStage[index];
+            MapIndexSelected = index;
             this.DialogResult = DialogResult.OK;
             this.Close();
         }

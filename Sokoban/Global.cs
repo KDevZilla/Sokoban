@@ -8,7 +8,15 @@ namespace Sokoban
 {
     public class Global
     {
-
+        public static void GotoNextMap()
+        {
+            CurrentSettings.CurrentMap++;
+            if(CurrentSettings.CurrentMap > 13)
+            {
+                CurrentSettings.CurrentMap = 0;
+            }
+            
+        }
         private static Settings _CurrentSettings;
         public static Settings CurrentSettings
         {

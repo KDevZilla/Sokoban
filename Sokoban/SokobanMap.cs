@@ -377,6 +377,10 @@ namespace Sokoban
             {
                 throw new Exception("No of list of DockPosition is 0 which is not correct. It must be more than 0");
             }
+            if(WorkerPosition == null)
+            {
+                throw new Exception("The map must include worker position");
+            }
         }
         public void ParseLevel(String level)
         {

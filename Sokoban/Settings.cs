@@ -10,7 +10,7 @@ namespace Sokoban
     public class Settings
     {
         public string Skin { get; set; } = "Boxxle";
-        public int CurrentMap { get; set; } = 1;
+        public int CurrentMap { get; set; } = 0;
        
 
     }

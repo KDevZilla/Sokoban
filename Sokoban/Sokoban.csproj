@@ -52,11 +52,23 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormAbout.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormAbout.Designer.cs">
+      <DependentUpon>FormAbout.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormChooseMap.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="FormChooseMap.Designer.cs">
       <DependentUpon>FormChooseMap.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormChooseSkin.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormChooseSkin.Designer.cs">
+      <DependentUpon>FormChooseSkin.cs</DependentUpon>
     </Compile>
     <Compile Include="FormSokoban.cs">
       <SubType>Form</SubType>
@@ -64,15 +76,20 @@
     <Compile Include="FormSokoban.Designer.cs">
       <DependentUpon>FormSokoban.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormWon.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormWon.Designer.cs">
+      <DependentUpon>FormWon.cs</DependentUpon>
+    </Compile>
     <Compile Include="Global.cs" />
     <Compile Include="Position.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="Skin\BoxWorldClassicSkin.cs" />
+    <Compile Include="Skin\BoxxleColorSkin.cs" />
     <Compile Include="Skin\BoxxleSkin.cs" />
-    <Compile Include="Skin\ChocobanSkin.cs" />
-    <Compile Include="Skin\LegoSkin.cs" />
     <Compile Include="Skin\BaseSkin.cs" />
     <Compile Include="Skin\SkinFactory.cs" />
     <Compile Include="Skin\YoshiSkin.cs" />
@@ -82,11 +99,20 @@
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="FormAbout.resx">
+      <DependentUpon>FormAbout.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FormChooseMap.resx">
       <DependentUpon>FormChooseMap.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="FormChooseSkin.resx">
+      <DependentUpon>FormChooseSkin.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FormSokoban.resx">
       <DependentUpon>FormSokoban.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormWon.resx">
+      <DependentUpon>FormWon.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -165,43 +191,31 @@
     <Content Include="AppInfo\images\boxxle\wall.bmp">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="AppInfo\images\Chocoban\ground.bmp">
+    <Content Include="AppInfo\images\boxxle_color\floor.bmp">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="AppInfo\images\Chocoban\mover.bmp">
+    <Content Include="AppInfo\images\boxxle_color\mover_down.bmp">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="AppInfo\images\Chocoban\mover_store.bmp">
+    <Content Include="AppInfo\images\boxxle_color\mover_left.bmp">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="AppInfo\images\Chocoban\object.bmp">
+    <Content Include="AppInfo\images\boxxle_color\mover_right.bmp">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="AppInfo\images\Chocoban\object_store.bmp">
+    <Content Include="AppInfo\images\boxxle_color\mover_up.bmp">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="AppInfo\images\Chocoban\store.bmp">
+    <Content Include="AppInfo\images\boxxle_color\object.bmp">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="AppInfo\images\Chocoban\wall.bmp">
+    <Content Include="AppInfo\images\boxxle_color\object_store.bmp">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="AppInfo\images\Lego\Lego_ground.bmp">
+    <Content Include="AppInfo\images\boxxle_color\store.bmp">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="AppInfo\images\Lego\Lego_mover.bmp">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="AppInfo\images\Lego\Lego_object.bmp">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="AppInfo\images\Lego\Lego_object_store.bmp">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="AppInfo\images\Lego\Lego_store.bmp">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="AppInfo\images\Lego\Lego_wall.bmp">
+    <Content Include="AppInfo\images\boxxle_color\wall.bmp">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="AppInfo\images\yoshi32\yoshi-32-bordered-wall.png">

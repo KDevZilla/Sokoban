@@ -17,6 +17,8 @@ namespace Sokoban
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             // Application.Run(new Form1());
+            //Global.CurrentSettings.CurrentMap = 0;
+            //Global.SaveSettings();
 
             Application.Run(new FormSokoban());
         }

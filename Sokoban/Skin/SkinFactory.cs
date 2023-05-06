@@ -12,17 +12,19 @@ namespace Sokoban.Skin
         {
             BoxWorldClassic,
             Boxxle,
-            Chocoban,
-            Lego,
+            BoxxleColor,
+         //   Chocoban,
+         //   Lego,
             Yoshi32
         };
         private static Dictionary<String, SkinType> dicStringToSkinType = new Dictionary<string, SkinType>()
         {
             { "BoxWorldClassic",SkinType.BoxWorldClassic },
             { "Boxxle",SkinType.Boxxle },
-            { "Chocoban",SkinType.Chocoban },
-            { "Lego",SkinType.Lego },
-            { "Yoshi32",SkinType.Yoshi32 }
+            { "BoxxleColor",SkinType.BoxxleColor },
+        //    { "Chocoban",SkinType.Chocoban },
+        //    { "Lego",SkinType.Lego },
+            { "Yoshi",SkinType.Yoshi32 }
 
         };
 
@@ -30,9 +32,10 @@ namespace Sokoban.Skin
         {
             { SkinType.BoxWorldClassic,"BoxWorldClassic"},
             { SkinType.Boxxle,"Boxxle" },
-            { SkinType.Chocoban,"Chocoban" },
-            { SkinType.Lego,"Lego" },
-            { SkinType.Yoshi32,"Yoshi32" }
+            { SkinType.BoxxleColor,"BoxxleColor" },
+         //   { SkinType.Chocoban,"Chocoban" },
+         //   { SkinType.Lego,"Lego" },
+            { SkinType.Yoshi32,"Yoshi" }
 
         };
         public static SkinType FromStringToSkinType(String skintypeString)
@@ -58,12 +61,17 @@ namespace Sokoban.Skin
                 case SkinType.Boxxle:
                     Skin = new BoxxleSkin();
                     break;
+                case SkinType.BoxxleColor:
+                    Skin = new BoxxleColorSkin();
+                    break;
+                    /*
                 case SkinType.Chocoban:
                     Skin = new ChocobanSkin();
                     break;
                 case SkinType.Lego:
                     Skin = new LegoSkin();
                     break;
+                    */
                 case SkinType.Yoshi32:
                     Skin = new YoshiSkin();
                     break;

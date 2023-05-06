@@ -62,13 +62,17 @@ namespace Sokoban
             Global.CurrentSettings.Skin = "Boxxle";
             Global.SaveSettings();
             */
+            FormChooseMap f = new FormChooseMap();
 
             this.KeyPreview = true;
             pictureBox1.Paint += PictureBox1_Paint;
             this.KeyDown -= Form1_KeyDown;
             this.KeyDown += Form1_KeyDown;
+
+            this.Level = f.GetMapByIndex(Global.CurrentSettings.CurrentMap);
             RestartGame();
-           
+          
+
         }
         private void RestartGame()
         {
@@ -84,13 +88,11 @@ namespace Sokoban
         int ElementWidth = 64;
         private void PictureBox1_Paint(object sender, PaintEventArgs e)
         {
-            // throw new NotImplementedException();
+           
             int i;
             int j;
 
-            //  String[] LevelLines = Level.Split(Environment.NewLine.ToCharArray (), StringSplitOptions.RemoveEmptyEntries);
-            //  Level2d = new string[LevelLines.Length, LevelLines[0].Length];
-            e.Graphics.Clear(Color.Black);
+             e.Graphics.Clear(Color.Black);
             e.Graphics.CompositingMode = CompositingMode.SourceCopy;
             BaseSkin skin = GetSkin(Global.CurrentSettings.Skin);
             for (i = 0; i < sokoMap.Level2d.GetLength(0); i++)
@@ -117,7 +119,7 @@ namespace Sokoban
                         i * ElementWidth , 
                         ElementWidth , 
                         ElementWidth );
-                    // e.Graphics.DrawImage(img, rec);
+                    
 
                     
                     using (ImageAttributes wrapMode = new ImageAttributes())
@@ -170,12 +172,36 @@ namespace Sokoban
 
             if(sokoMap.IsSolve)
             {
-                MessageBox.Show("Finish");
+                ShowWon();
             }
 
         }
+        private void ShowWon()
+        {
+            //  MessageBox.Show("Finish");
+            FormWon f = new FormWon();
+            //f.TopLevel = false;
+            //    f.Parent = this;
+            f.StartPosition = FormStartPosition.CenterParent;
+            f.ShowDialog();
+            if (f.DialogResult != DialogResult.OK)
+            {
+                return;
+            }
 
-      
+            if (f.Decision == FormWon.UserDecision.ReplayTheMap)
+            {
+                RestartGame();
+                return;
+            }
+            Global.GotoNextMap();
+            Global.SaveSettings();
+
+            FormChooseMap fChooseMap = new FormChooseMap();
+            this.Level = fChooseMap.GetMapByIndex(Global.CurrentSettings.CurrentMap);
+            RestartGame();
+        }
+
         private Dictionary<String, Sokoelement> dicElemntType = new Dictionary<String, Sokoelement>()
         {
             {"$", Sokoelement.box  },
@@ -188,42 +214,7 @@ namespace Sokoban
 
         };
     
-        /*
-        private Dictionary<Sokoelement, String> dicImageFileName = new Dictionary<Sokoelement, string>()
-        {
-            {Sokoelement.box,@"yoshi-32-box.png" },
-            {Sokoelement.box_docx,@"yoshi-32-box-docked.png" },
-            {Sokoelement.dock,@"yoshi-32-dock.png" },
-            {Sokoelement.floor,@"yoshi-32-floor.png" },
-            {Sokoelement.wall,@"yoshi-32-wall.png" },
-            {Sokoelement.worker,@"yoshi-32-worker.png" },
-            {Sokoelement.worker_dock,@"yoshi-32-worker-docked.png" },
 
-        };
-        */
-        /*
-        private Dictionary<Sokoelement, String> dicImageFileName = new Dictionary<Sokoelement, string>()
-        {
-            {Sokoelement.box,@"boxxle\object.bmp" },
-            {Sokoelement.box_docx,@"boxxle\object_store.bmp" },
-            {Sokoelement.dock,@"boxxle\store.bmp" },
-            {Sokoelement.floor,@"boxxle\floor.bmp" },
-            {Sokoelement.wall,@"boxxle\wall.bmp" },
-            {Sokoelement.worker,@"boxxle\mover_down.bmp" },
-            {Sokoelement.worker_dock,@"boxxle\mover_down.bmp" },
-
-        };
-
-        private Dictionary<SokobanMap.Direction, String> dicImageDirectionFileName = new Dictionary<SokobanMap.Direction, string>()
-        {
-            {SokobanMap.Direction.Up ,@"boxxle\mover_up.bmp" },
-            {SokobanMap.Direction.Down  ,@"boxxle\mover_down.bmp" },
-            {SokobanMap.Direction.Left  ,@"boxxle\mover_left.bmp" },
-            {SokobanMap.Direction.Right  ,@"boxxle\mover_right.bmp" },
-
-
-        };
-        */
         private void restartToolStripMenuItem_Click(object sender, EventArgs e)
         {
             this.RestartGame();
@@ -244,9 +235,35 @@ namespace Sokoban
             {
                 return;
             }
+            Global.CurrentSettings.CurrentMap = f.MapIndexSelected;
+            Global.SaveSettings();
 
             this.Level = f.SelectedMap;
             this.RestartGame();
+
+        }
+
+        private void toolStripMenuItem2_Click(object sender, EventArgs e)
+        {
+            FormChooseSkin f = new FormChooseSkin();
+            f.StartPosition = FormStartPosition.CenterParent;
+            f.ShowDialog(this);
+            if (f.DialogResult != DialogResult.OK)
+            {
+                return;
+            }
+            Global.CurrentSettings.Skin = f.ChoosenSkin;
+            Global.SaveSettings();
+            this.pictureBox1.Invalidate();
+
+        }
+
+        private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            FormAbout f = new FormAbout();
+            f.Parent = this;
+            f.StartPosition = FormStartPosition.CenterParent;
+            f.ShowDialog();
 
         }
     }
