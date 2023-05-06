@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Drawing2D;
+using System.Drawing.Imaging;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,8 +18,26 @@ namespace Sokoban
         /*
          * Credit 
          * Images::https://github.com/borgar/sokoban-skins
-         * 
+         * http://visual-sokoban.narod.ru/skins_1.htm
          */
+        private Dictionary<Skin.SkinFactory.SkinType, BaseSkin> dicSkin = null;
+        private BaseSkin GetSkin(String skin)
+        {
+            return GetSkin(Skin.SkinFactory.FromStringToSkinType(skin));
+        }
+        private  BaseSkin GetSkin(Skin.SkinFactory.SkinType skintype)
+        {
+
+            if(dicSkin == null)
+            {
+                dicSkin = new Dictionary<Skin.SkinFactory.SkinType, BaseSkin>();
+            }
+            if(!dicSkin.ContainsKey(skintype))
+            {
+                dicSkin.Add(skintype, Skin.SkinFactory.CreateSkin(skintype));
+            }
+            return dicSkin[skintype];
+        }
         public FormSokoban()
         {
             InitializeComponent();
@@ -38,6 +58,11 @@ namespace Sokoban
         SokobanMap sokoMap = null;
         private void FormSokoban_Load(object sender, EventArgs e)
         {
+            /*
+            Global.CurrentSettings.Skin = "Boxxle";
+            Global.SaveSettings();
+            */
+
             this.KeyPreview = true;
             pictureBox1.Paint += PictureBox1_Paint;
             this.KeyDown -= Form1_KeyDown;
@@ -65,7 +90,9 @@ namespace Sokoban
 
             //  String[] LevelLines = Level.Split(Environment.NewLine.ToCharArray (), StringSplitOptions.RemoveEmptyEntries);
             //  Level2d = new string[LevelLines.Length, LevelLines[0].Length];
-
+            e.Graphics.Clear(Color.Black);
+            e.Graphics.CompositingMode = CompositingMode.SourceCopy;
+            BaseSkin skin = GetSkin(Global.CurrentSettings.Skin);
             for (i = 0; i < sokoMap.Level2d.GetLength(0); i++)
             {
                 //string line = LevelLines[i].Trim();
@@ -78,16 +105,29 @@ namespace Sokoban
                     {
 
                         // img = GetImage(dicElemntType[sokoMap.Level2d[i, j]]);
-                        img = GetImageWorkerDirection(sokoMap.WorkerCurrentDirection);
+                        img = skin.GetWorkderDirectionImage (sokoMap.WorkerCurrentDirection);
                     }
                     else
                     {
-
-                        img = GetImage(dicElemntType[sokoMap.Level2d[i, j]]);
+                        img = skin.GetElementImage(dicElemntType[sokoMap.Level2d[i, j]]);
+                        //img = GetImage(dicElemntType[sokoMap.Level2d[i, j]]);
                     }
-                    int offset = 2;
-                    Rectangle rec = new Rectangle(j * ElementWidth - offset, i * ElementWidth - offset, ElementWidth + offset * 2, ElementWidth + offset * 2);
-                    e.Graphics.DrawImage(img, rec);
+                    int offset = 0;
+                    Rectangle rec = new Rectangle(j * ElementWidth , 
+                        i * ElementWidth , 
+                        ElementWidth , 
+                        ElementWidth );
+                    // e.Graphics.DrawImage(img, rec);
+
+                    
+                    using (ImageAttributes wrapMode = new ImageAttributes())
+                    {
+                        wrapMode.SetWrapMode(WrapMode.TileFlipXY);
+                      
+                        e.Graphics.DrawImage(img, rec, 0, 0, img.Width, img.Height, GraphicsUnit.Pixel, wrapMode);
+                    }
+                    
+                   
                 }
             }
 
@@ -147,52 +187,7 @@ namespace Sokoban
             {"+",Sokoelement.worker_dock },
 
         };
-        private Image GetImage(Sokoelement imgtype)
-        {
-            if (!dicImage.ContainsKey(imgtype))
-            {
-                String fileName = Util.FileUtil.ImageFolderPath + dicImageFileName[imgtype];
-
-                System.Drawing.Image img = Image.FromFile(fileName);
-                dicImage.Add(imgtype, img);
-            }
-            return dicImage[imgtype];
-        }
-        private Image GetImageWorkerDirection(SokobanMap.Direction direction)
-        {
-            if (!dicImageDirection.ContainsKey(direction))
-            {
-                String fileName = Util.FileUtil.ImageFolderPath + dicImageDirectionFileName[direction];
-
-                System.Drawing.Image img = Image.FromFile(fileName);
-                dicImageDirection.Add(direction, img);
-            }
-            return dicImageDirection[direction];
-        }
-        private Dictionary<Sokoelement, Image> _dicImage = null;
-        public Dictionary<Sokoelement, Image> dicImage
-        {
-            get
-            {
-                if (_dicImage == null)
-                {
-                    _dicImage = new Dictionary<Sokoelement, Image>();
-                }
-                return _dicImage;
-            }
-        }
-        private Dictionary<SokobanMap.Direction, Image> _dicImageDirection = null;
-        public Dictionary<SokobanMap.Direction, Image> dicImageDirection
-        {
-            get
-            {
-                if (_dicImageDirection == null)
-                {
-                    _dicImageDirection = new Dictionary<SokobanMap.Direction, Image>();
-                }
-                return _dicImageDirection;
-            }
-        }
+    
         /*
         private Dictionary<Sokoelement, String> dicImageFileName = new Dictionary<Sokoelement, string>()
         {
@@ -206,6 +201,7 @@ namespace Sokoban
 
         };
         */
+        /*
         private Dictionary<Sokoelement, String> dicImageFileName = new Dictionary<Sokoelement, string>()
         {
             {Sokoelement.box,@"boxxle\object.bmp" },
@@ -227,6 +223,7 @@ namespace Sokoban
 
 
         };
+        */
         private void restartToolStripMenuItem_Click(object sender, EventArgs e)
         {
             this.RestartGame();
