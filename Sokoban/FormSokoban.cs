@@ -261,7 +261,7 @@ namespace Sokoban
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
             FormAbout f = new FormAbout();
-            f.Parent = this;
+           // f.Parent = this;
             f.StartPosition = FormStartPosition.CenterParent;
             f.ShowDialog();
 
