@@ -56,7 +56,7 @@ namespace Sokoban
 
 
         }
-        int ElementWidth = 60;
+        int ElementWidth = 64;
         private void PictureBox1_Paint(object sender, PaintEventArgs e)
         {
             // throw new NotImplementedException();
@@ -72,9 +72,21 @@ namespace Sokoban
                 for (j = 0; j < sokoMap.Level2d.GetLength(1); j++)
                 {
                     //Level2d[i, j] = line.Substring (j,1);
+                    Image img = null;
+                    if (dicElemntType[sokoMap.Level2d[i, j]] == Sokoelement.worker ||
+                        dicElemntType[sokoMap.Level2d[i, j]] == Sokoelement.worker_dock)
+                    {
 
-                    Image img = GetImage(dicElemntType[sokoMap.Level2d[i, j]]);
-                    Rectangle rec = new Rectangle(j * ElementWidth - 1, i * ElementWidth - 1, ElementWidth + 2, ElementWidth + 2);
+                        // img = GetImage(dicElemntType[sokoMap.Level2d[i, j]]);
+                        img = GetImageWorkerDirection(sokoMap.WorkerCurrentDirection);
+                    }
+                    else
+                    {
+
+                        img = GetImage(dicElemntType[sokoMap.Level2d[i, j]]);
+                    }
+                    int offset = 2;
+                    Rectangle rec = new Rectangle(j * ElementWidth - offset, i * ElementWidth - offset, ElementWidth + offset * 2, ElementWidth + offset * 2);
                     e.Graphics.DrawImage(img, rec);
                 }
             }
@@ -146,7 +158,17 @@ namespace Sokoban
             }
             return dicImage[imgtype];
         }
+        private Image GetImageWorkerDirection(SokobanMap.Direction direction)
+        {
+            if (!dicImageDirection.ContainsKey(direction))
+            {
+                String fileName = Util.FileUtil.ImageFolderPath + dicImageDirectionFileName[direction];
 
+                System.Drawing.Image img = Image.FromFile(fileName);
+                dicImageDirection.Add(direction, img);
+            }
+            return dicImageDirection[direction];
+        }
         private Dictionary<Sokoelement, Image> _dicImage = null;
         public Dictionary<Sokoelement, Image> dicImage
         {
@@ -159,7 +181,19 @@ namespace Sokoban
                 return _dicImage;
             }
         }
-
+        private Dictionary<SokobanMap.Direction, Image> _dicImageDirection = null;
+        public Dictionary<SokobanMap.Direction, Image> dicImageDirection
+        {
+            get
+            {
+                if (_dicImageDirection == null)
+                {
+                    _dicImageDirection = new Dictionary<SokobanMap.Direction, Image>();
+                }
+                return _dicImageDirection;
+            }
+        }
+        /*
         private Dictionary<Sokoelement, String> dicImageFileName = new Dictionary<Sokoelement, string>()
         {
             {Sokoelement.box,@"yoshi-32-box.png" },
@@ -171,7 +205,28 @@ namespace Sokoban
             {Sokoelement.worker_dock,@"yoshi-32-worker-docked.png" },
 
         };
-       
+        */
+        private Dictionary<Sokoelement, String> dicImageFileName = new Dictionary<Sokoelement, string>()
+        {
+            {Sokoelement.box,@"boxxle\object.bmp" },
+            {Sokoelement.box_docx,@"boxxle\object_store.bmp" },
+            {Sokoelement.dock,@"boxxle\store.bmp" },
+            {Sokoelement.floor,@"boxxle\floor.bmp" },
+            {Sokoelement.wall,@"boxxle\wall.bmp" },
+            {Sokoelement.worker,@"boxxle\mover_down.bmp" },
+            {Sokoelement.worker_dock,@"boxxle\mover_down.bmp" },
+
+        };
+
+        private Dictionary<SokobanMap.Direction, String> dicImageDirectionFileName = new Dictionary<SokobanMap.Direction, string>()
+        {
+            {SokobanMap.Direction.Up ,@"boxxle\mover_up.bmp" },
+            {SokobanMap.Direction.Down  ,@"boxxle\mover_down.bmp" },
+            {SokobanMap.Direction.Left  ,@"boxxle\mover_left.bmp" },
+            {SokobanMap.Direction.Right  ,@"boxxle\mover_right.bmp" },
+
+
+        };
         private void restartToolStripMenuItem_Click(object sender, EventArgs e)
         {
             this.RestartGame();

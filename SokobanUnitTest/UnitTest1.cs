@@ -59,6 +59,7 @@ namespace SokobanUnitTest
             Assert.IsTrue(Map.WorkerPosition.Col == 1);
 
             Map.PlayerWalk(Direction.Right);
+            Assert.IsTrue(Map.WorkerCurrentDirection == Direction.Right);
             Assert.IsTrue(Map.Level2d[1, 2] == dicElemntTypeToString[Sokoelement.worker]);
             Assert.IsTrue(Map.WorkerPosition.Row == 1);
             Assert.IsTrue(Map.WorkerPosition.Col == 2);
@@ -70,6 +71,7 @@ namespace SokobanUnitTest
 
 
             Map.PlayerWalk(Direction.Down);
+            Assert.IsTrue(Map.WorkerCurrentDirection == Direction.Down);
             Assert.IsTrue(Map.Level2d[2, 3] == dicElemntTypeToString[Sokoelement.worker]);
 
             Map.PlayerWalk(Direction.Down);
@@ -264,8 +266,11 @@ namespace SokobanUnitTest
             Sokoban.SokobanMap Map = new Sokoban.SokobanMap(pLevel);
 
             String[,] level2dOriginal =(String[,])Map.Level2d.Clone();
+            var workerDirectionBeforeMove = Map.WorkerCurrentDirection;
 
             Map.PlayerWalk(Sokoban.SokobanMap.Direction.Down);
+            Assert.IsTrue(Map.WorkerCurrentDirection == Direction.Down);
+
             Map.Undo();
             int i;
             int j;
@@ -279,7 +284,8 @@ namespace SokobanUnitTest
                     }
                 }
             }
-           
+            Assert.IsTrue(Map.WorkerCurrentDirection == workerDirectionBeforeMove);
+
 
 
 

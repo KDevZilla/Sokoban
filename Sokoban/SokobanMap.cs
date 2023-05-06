@@ -21,6 +21,7 @@ namespace Sokoban
         
         public String[,] Level2d = null;
         Stack<String[,]> stackState { get; set; } = new Stack<String[,]>();
+        Stack<Direction> stackWorkderDirection { get; set; } = new Stack<Direction>();
         Sokoelement[,] LevelElement = null;
         public int Row { get; private set; } = 0;
         public int Col { get; private set; } = 0;
@@ -34,7 +35,7 @@ namespace Sokoban
             worker,
             worker_dock
         }
-
+        public Direction WorkerCurrentDirection { get; private set; } = Direction.Left;
         private Dictionary<String, Sokoelement> dicStringToElemntType = new Dictionary<String, Sokoelement>()
         {
             {"$", Sokoelement.box  },
@@ -242,19 +243,26 @@ namespace Sokoban
                 } 
 
                // return;
-            } 
-            if (CanMove)
+            }
+            if (!CanMove)
             {
+                return;
+            }
+
                 if (BoxPositionToMove != null)
                 {
                     MoveBox(BoxPositionToMove, BoxPositionToMove.Add(deltaPosition));
                 }
 
-                WorkerPosition = NextToPlayerPosition.Clone();
-            }
+           
+           stackWorkderDirection.Push(WorkerCurrentDirection);
+            WorkerCurrentDirection = direction;
+            WorkerPosition = NextToPlayerPosition.Clone();
+            
 
             //stackDirection.Push(direction);
             stackState.Push((String[,])Level2d.Clone());
+
             UpdateMap();
             CheckIfIsSolve();
             
@@ -289,7 +297,7 @@ namespace Sokoban
             }
           //  stackState.Pop();
             Level2d = stackState.Pop();
-
+            WorkerCurrentDirection = stackWorkderDirection.Pop();
             ParseLevelFromLevel2d();
             UpdateMap();
             CheckIfIsSolve();

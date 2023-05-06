@@ -101,34 +101,61 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="AppInfo\images\yoshi-32-bordered-wall.png">
+    <Content Include="AppInfo\images\boxxle\floor.bmp">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="AppInfo\images\yoshi-32-box-docked.png">
+    <Content Include="AppInfo\images\boxxle\mover_down.bmp">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="AppInfo\images\yoshi-32-box.png">
+    <Content Include="AppInfo\images\boxxle\mover_left.bmp">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="AppInfo\images\yoshi-32-dock.png">
+    <Content Include="AppInfo\images\boxxle\mover_right.bmp">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="AppInfo\images\yoshi-32-floor.png">
+    <Content Include="AppInfo\images\boxxle\mover_up.bmp">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="AppInfo\images\yoshi-32-preview-simple.png">
+    <Content Include="AppInfo\images\boxxle\object.bmp">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="AppInfo\images\yoshi-32-preview.png">
+    <Content Include="AppInfo\images\boxxle\object_store.bmp">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="AppInfo\images\yoshi-32-wall.png">
+    <Content Include="AppInfo\images\boxxle\store.bmp">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="AppInfo\images\yoshi-32-worker-docked.png">
+    <Content Include="AppInfo\images\boxxle\wall.bmp">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="AppInfo\images\yoshi-32-worker.png">
+    <Content Include="AppInfo\images\yoshi32\yoshi-32-bordered-wall.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="AppInfo\images\yoshi32\yoshi-32-box-docked.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="AppInfo\images\yoshi32\yoshi-32-box.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="AppInfo\images\yoshi32\yoshi-32-dock.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="AppInfo\images\yoshi32\yoshi-32-floor.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="AppInfo\images\yoshi32\yoshi-32-preview-simple.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="AppInfo\images\yoshi32\yoshi-32-preview.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="AppInfo\images\yoshi32\yoshi-32-wall.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="AppInfo\images\yoshi32\yoshi-32-worker-docked.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="AppInfo\images\yoshi32\yoshi-32-worker.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
