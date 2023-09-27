@@ -94,6 +94,11 @@ namespace Sokoban
 
              e.Graphics.Clear(Color.Black);
             e.Graphics.CompositingMode = CompositingMode.SourceCopy;
+
+            e.Graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
+            e.Graphics.CompositingQuality = CompositingQuality.HighQuality;
+            e.Graphics.PixelOffsetMode = PixelOffsetMode.HighQuality;
+
             BaseSkin skin = GetSkin(Global.CurrentSettings.Skin);
             for (i = 0; i < sokoMap.Level2d.GetLength(0); i++)
             {
